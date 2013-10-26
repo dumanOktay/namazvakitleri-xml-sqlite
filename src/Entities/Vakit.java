@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -21,18 +22,23 @@ public class Vakit implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    int cityId;
-    
-    int countryID; 
-    
-    String cityNameTR;
-    
-    String cityNameEN;
-    
-    String cityStateTR;
+   @ManyToOne
+   GenelBilgiler genelBilgiler;
     
     String icerik;
 
+    public void setGenelBilgiler(GenelBilgiler genelBilgiler) {
+        this.genelBilgiler = genelBilgiler;
+        
+        genelBilgiler.addVakit(this);
+    }
+
+    public GenelBilgiler getGenelBilgiler() {
+        return genelBilgiler;
+    }
+
+    
+    
     public String getIcerik() {
         return icerik;
     }

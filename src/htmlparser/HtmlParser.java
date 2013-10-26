@@ -4,6 +4,7 @@
  */
 package htmlparser;
 
+import Entities.GenelBilgiler;
 import Entities.Vakit;
 import Veritabani.Veritabani;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -44,6 +45,23 @@ public class HtmlParser {
 	doc.getDocumentElement().normalize();
  
 	System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+        
+        NodeList bilgi=doc.getElementsByTagName("cityinfo");
+        
+        Node n=bilgi.item(0);
+        
+        GenelBilgiler  gb= new GenelBilgiler();;
+        
+        
+        
+        if(n.getNodeType()==Node.ELEMENT_NODE){
+            Element e=(Element)n;
+            System.out.println("şehirr"+e.getAttribute("cityNameTR"));
+           
+            gb.setCityNameTR(e.getAttribute("cityNameTR"));
+            
+            Veritabani.persist(gb);
+        }
  
 	NodeList nList = doc.getElementsByTagName("prayertimes");
  
@@ -63,10 +81,12 @@ public class HtmlParser {
                        
                        String icerik = eElement.getTextContent();
                        
-                       /*Vakit vakit= new Vakit();
+                       Vakit vakit= new Vakit();
                        vakit.setIcerik(icerik);
                        
-                       Veritabani.persist(vakit);*/
+                       vakit.setGenelBilgiler(gb);
+                       
+                       Veritabani.persist(vakit);
  
 			System.out.println("Staff id : " + eElement.getAttribute("dayofyear"));
 			/*System.out.println("First Name : " + eElement.getElementsByTagName("prayertimes").item(0).getTextContent());
